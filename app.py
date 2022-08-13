@@ -9,21 +9,17 @@ from jupyter_dash import JupyterDash
 from dash import dcc, dash_table
 from dash import html
 from dash.dependencies import Input, Output
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
 # For this lab, we will be working with the 2019 General Social Survey one last time.
 
-# In[2]:
-
-
-get_ipython().run_cell_magic('capture', '', 'gss = pd.read_csv("https://github.com/jkropko/DS-6001/raw/master/localdata/gss2018.csv",\n                 encoding=\'cp1252\', na_values=[\'IAP\',\'IAP,DK,NA,uncodeable\', \'NOT SURE\',\n                                               \'DK\', \'IAP, DK, NA, uncodeable\', \'.a\', "CAN\'T CHOOSE"])')
+%%capture
+gss = pd.read_csv("https://github.com/jkropko/DS-6001/raw/master/localdata/gss2018.csv",
+                 encoding='cp1252', na_values=['IAP','IAP,DK,NA,uncodeable', 'NOT SURE',
+                                               'DK', 'IAP, DK, NA, uncodeable', '.a', "CAN'T CHOOSE"])
 
 
 # In[3]:
-
-
-gss
 
 
 # Here is code that cleans the data and gets it ready to be used for data visualizations:
@@ -69,7 +65,6 @@ table = gss_clean.groupby('sex').agg({'income':'mean', 'job_prestige':'mean', 's
 
 
 table=ff.create_table(table)
-table
 
 
 # ## Problem 3
@@ -88,7 +83,6 @@ gss_groupbar = pd.melt(gss_groupbar, id_vars = 'sex', value_vars = ['strongly ag
 fig_bar= px.bar(gss_groupbar, x='male_breadwinner', y='value', color='sex',
        labels={'value':'Number of Respondents', 'male_breadwinner':'Response'}, barmode = 'group')
 
-fig_bar
 
 
 # ## Problem 4
@@ -103,8 +97,6 @@ fig_line = px.scatter(gss_clean, x='job_prestige', y='income', color='sex', tren
                         'income':'Personal Income'},
                  hover_data=['education', 'socioeconomic_index'])
 fig_line.update(layout=dict(title=dict(x=0.5)))
-fig_line.show()
-fig_line
 
 
 # ## Problem 5
@@ -118,7 +110,6 @@ fig_box1 = px.box(gss_clean, x='income', y = 'sex', color = 'sex',
                    )
 fig_box1.update(layout=dict(title=dict(x=0.5)))
 fig_box1.update_layout(showlegend=False)
-fig_box1.show()
 
 
 # In[11]:
@@ -129,7 +120,6 @@ fig_box2 = px.box(gss_clean, x='job_prestige', y = 'sex', color = 'sex',
                    )
 fig_box2.update(layout=dict(title=dict(x=0.5)))
 fig_box2.update_layout(showlegend=False)
-fig_box2.show()
 
 
 # ## Problem 6
@@ -174,7 +164,6 @@ fig = px.box(new_gss, x='income', y = 'sex', color = 'sex',
 fig.update(layout=dict(title=dict(x=0.5)))
 fig.update_layout(showlegend=False)
 fig.for_each_annotation(lambda a: a.update(text=a.text.replace("job_prestige=", "")))
-fig.show()
 
 
 # ## Problem 7
@@ -262,10 +251,7 @@ app.layout = html.Div(
 if __name__ == '__main__':
     app.run_server(debug=True,
                    use_reloader=False,
-                   port=8051)
-
-
-# In[ ]:
+                   port=8050)
 
 
 
